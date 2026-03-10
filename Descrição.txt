@@ -1,0 +1,47 @@
+Descritivo do Projeto: Otimização da Rede Pluviométrica de São José dos Campos (Versão Corrigida) 
+
+1. Resumo do Projeto 
+
+O notebook apresenta uma metodologia para a realocação e otimização de estações pluviométricas, integrando Geoprocessamento e Pesquisa Operacional. O objetivo central é maximizar a eficiência da rede no monitoramento de áreas críticas, utilizando um peso multiobjetivo ($W_{exp}$) que combina densidade populacional, zonas de risco hidrológico e volume de precipitação.  
+
+2. Preparação e Integração de Dados 
+
+O estudo fundamenta-se em três pilares:  
+
+Dados Pluviométricos (Chuva): Dados reais de 2025 (PlugField), com tratamento de outliers para remover estações com falhas (ex: Sítio Bom Jesus e Chácaras Miranda).  
+
+Mapeamento de Risco: Polígonos de inundação e riscos geológicos (GeoSanja/SJC) com aplicação de um buffer métrico de 800 metros para capturar a incerteza espacial.  
+
+Demografia: Dados do WorldPop (2025) com resolução de 100m. A população é extraída de forma acumulada em um raio de 1.000 metros para cada ponto potencial do grid.  
+
+3. Metodologia Estatística e Geoespacial 
+
+Interpolação por Krigagem Ordinária: Utilizada para estimar a pluviosidade em áreas sem sensores, garantindo um mapa contínuo de precipitação para o modelo de otimização.  
+
+Peso Multiobjetivo ($W_{exp}$): Cada ponto do grid recebe uma pontuação baseada na combinação ponderada de População, Risco e Chuva, permitindo simular diferentes cenários de prioridade. 
+
+4. Abordagens de Otimização Implementadas 
+
+O projeto compara quatro metodologias distintas para a localização das estações: 
+
+K-Means Ponderado (Baseline): Utiliza o algoritmo de agrupamento para regionalizar o território com base na densidade de peso, posicionando estações nos centroides dos clusters. 
+
+Heurística Gulosa com Inibição Espacial: Seleciona iterativamente os pontos de maior peso, aplicando uma restrição de distância mínima (1,5 km) entre estações para garantir a dispersão e evitar redundância. 
+
+Modelo Exato de Cobertura Máxima (MCLP): Formulado em Programação Linear Inteira (biblioteca PuLP/Solver CBC). Este modelo busca a solução globalmente ótima para maximizar o peso total coberto dentro de um raio de atendimento fixo (800m). 
+
+Algoritmos Híbridos (Decomposição Espacial): 
+
+Híbrido 1 (Clustering + Guloso): Divide a cidade em regiões via K-Means e aplica a Heurística Gulosa localmente em cada região. 
+
+Híbrido 2 (Clustering + Exato): Divide a cidade em regiões e executa o modelo MCLP exato dentro de cada sub-região. Esta abordagem visa manter a precisão do modelo exato com o ganho de velocidade da decomposição. 
+
+5. Análise de Resultados e Visualização 
+
+Cenários Comparativos: Testes focados em diferentes equilíbrios (Equilibrado, Foco em Risco, Foco em População). 
+
+Métricas de Desempenho: Avaliação baseada no Ganho de População Coberta (Pop%), Ganho de Risco Coberto (Risco%), Pontuação Total e Tempo de Execução (s). 
+
+Visualização Interativa: Geração de mapas dinâmicos em Folium com camadas de Heatmap de risco e raios de cobertura das estações propostas. 
+
+ 
