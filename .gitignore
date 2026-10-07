@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.Python
+
+# Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Temp / build
+*.log
+*.tmp
+build/
+dist/
+
+# --- Large / external data (not versioned; see data/README.md) ---
+# WorldPop population raster (~457 MB, exceeds GitHub file limit)
+*.tif
+*.tiff
+# Large archives
+*.zip
+*.7z
+*.rar
+# Big binary data dumps (keep small samples only, force-add if needed)
+*.parquet
